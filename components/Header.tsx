@@ -40,7 +40,7 @@ export default function Header() {
             {topics.map((topic) => (
               <Link
                 key={topic}
-                href="/blog"
+                href={`/blog?tag=${encodeURIComponent(topic)}`}
                 className="text-[11px] font-bold tracking-widest text-slate-400 hover:text-white transition-colors whitespace-nowrap uppercase"
               >
                 {topic}
