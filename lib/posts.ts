@@ -6,6 +6,7 @@ export type PostMeta = {
   date: string
   description: string
   tags: string[]
+  readingTime: number
 }
 
 export type Post = PostMeta & {
@@ -25,6 +26,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
       description: true,
       tags: true,
       createdAt: true,
+      content: true,
     },
   })
 
@@ -34,6 +36,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     description: p.description,
     tags: p.tags,
     date: p.createdAt.toISOString().split('T')[0],
+    readingTime: Math.ceil(p.content.split(' ').length / 200) || 1,
   }))
 }
 

@@ -7,4 +7,18 @@
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
+
+  /* Azul editorial — cor primária */
+  --color-primary: #1a56db;
+  --color-primary-dark: #1e40af;
+
+  /* Vermelho notícia — destaque, badges de categoria */
+  --color-accent: #dc2626;
+  --color-accent-light: #fef2f2;
+
+  /* Cinza quente — fundos de seções */
+  --color-surface: #f8fafc;
+  --color-surface-2: #f1f5f9;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
 }

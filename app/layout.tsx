@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${geist.variable} font-sans antialiased min-h-screen flex flex-col bg-white text-gray-900`}>
         <Header />
-        <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-10">
+        <main className="flex-1 w-full">
           {children}
         </main>
         <Footer />
