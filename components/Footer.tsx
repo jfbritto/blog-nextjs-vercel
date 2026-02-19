@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,8 +10,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
           {/* Coluna 1: Marca */}
           <div>
-            <Link href="/" className="text-xl font-black text-white hover:text-[#dc2626] transition-colors">
-              Meu Blog
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="IJR."
+                width={120}
+                height={32}
+                className="object-contain"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             </Link>
             <p className="mt-3 text-sm leading-relaxed">
               Conteúdo sobre desenvolvimento web moderno com Next.js, React e as melhores práticas de performance e SEO.

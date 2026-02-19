@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const topics = ["Next.js", "React", "Performance", "SEO", "TypeScript"];
 
@@ -8,11 +9,8 @@ export default function Header() {
       {/* Barra principal */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-14">
-          <Link
-            href="/"
-            className="text-2xl font-black tracking-tight text-slate-900 hover:text-[#dc2626] transition-colors"
-          >
-            Meu Blog
+          <Link href="/">
+            <Image src="/logo.png" alt="IJR." width={140} height={36} className="object-contain" />
           </Link>
           <ul className="flex gap-6 list-none">
             <li>

@@ -10,15 +10,19 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "Meu Blog",
-    template: "%s | Meu Blog",
+    default: "IJR. | Think Free",
+    template: "%s | IJR.",
   },
   description: "Um blog sobre desenvolvimento web com Next.js, React e tecnologias modernas.",
   openGraph: {
-    siteName: "Meu Blog",
+    siteName: "IJR.",
     locale: "pt_BR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
