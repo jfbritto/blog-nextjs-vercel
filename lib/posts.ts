@@ -55,6 +55,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     description: post.description,
     tags: post.tags,
     date: post.createdAt.toISOString().split('T')[0],
+    readingTime: Math.ceil(post.content.split(' ').length / 200) || 1,
     content: post.content,
     published: post.published,
   }
@@ -73,6 +74,7 @@ export async function getPostById(id: string): Promise<Post | null> {
     description: post.description,
     tags: post.tags,
     date: post.createdAt.toISOString().split('T')[0],
+    readingTime: Math.ceil(post.content.split(' ').length / 200) || 1,
     content: post.content,
     published: post.published,
   }

@@ -2,7 +2,7 @@ import NextAuth from 'next-auth'
 import { authConfig } from '@/lib/auth.config'
 
 // Cria uma instância do Auth.js APENAS com authConfig (sem Prisma/bcrypt).
-// Isso é obrigatório porque o middleware roda no Edge Runtime,
+// Isso é obrigatório porque o proxy roda no Edge Runtime,
 // que não suporta módulos Node.js como 'crypto', 'pg' e 'bcryptjs'.
 const { auth } = NextAuth(authConfig)
 
