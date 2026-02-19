@@ -1,0 +1,94 @@
+---
+title: "Deploy na Vercel: do zero à produção em 5 minutos"
+date: "2025-02-15"
+description: "Passo a passo completo para subir seu projeto Next.js na Vercel gratuitamente, com deploy automático a cada push no GitHub."
+tags: ["vercel", "deploy", "nextjs", "ci-cd"]
+---
+
+## Por que Vercel?
+
+A Vercel foi criada pelos mesmos criadores do Next.js. A integração é **zero-config**: você conecta seu repositório GitHub e ela sabe exatamente como fazer o build.
+
+Benefícios do plano gratuito:
+- Deploy automático a cada `git push`
+- HTTPS automático
+- CDN global (Edge Network)
+- Preview deployments para cada Pull Request
+- Domínio `.vercel.app` gratuito
+
+## Passo 1: Preparar o repositório
+
+Antes de tudo, seu projeto precisa estar no GitHub.
+
+```bash
+# Na raiz do projeto
+git init
+git add .
+git commit -m "feat: projeto inicial do blog"
+```
+
+Crie um repositório no GitHub e suba o código:
+
+```bash
+git remote add origin https://github.com/seu-usuario/site-nextjs.git
+git branch -M main
+git push -u origin main
+```
+
+## Passo 2: Criar conta na Vercel
+
+1. Acesse [vercel.com](https://vercel.com)
+2. Clique em **Sign Up**
+3. Escolha **Continue with GitHub** (mais fácil)
+4. Autorize o acesso
+
+## Passo 3: Importar o projeto
+
+1. No dashboard da Vercel, clique em **Add New → Project**
+2. Selecione o repositório `site-nextjs`
+3. A Vercel detecta automaticamente que é Next.js
+4. Clique em **Deploy**
+
+Pronto! Em ~2 minutos seu site está no ar com uma URL como:
+`https://site-nextjs-seu-usuario.vercel.app`
+
+## Passo 4: Deploy automático (CI/CD)
+
+A partir de agora, **qualquer push para a branch `main`** vai disparar um novo deploy automaticamente. Isso é CI/CD gratuito.
+
+```bash
+# Altere algo, commite e faça push
+git add .
+git commit -m "feat: novo post"
+git push
+```
+
+A Vercel recebe o push via webhook, faz o build e publica a nova versão.
+
+## Variáveis de ambiente
+
+Se seu projeto usa `.env.local`, você precisa adicionar as variáveis na Vercel:
+
+1. Vá em **Project Settings → Environment Variables**
+2. Adicione cada variável com nome e valor
+3. Escolha os ambientes: Production, Preview, Development
+
+## Domínio personalizado
+
+Para usar `www.seusite.com.br` em vez do domínio Vercel:
+
+1. Vá em **Project Settings → Domains**
+2. Adicione seu domínio
+3. Configure o DNS conforme as instruções (geralmente um registro CNAME ou A)
+
+## Preview Deployments
+
+Cada Pull Request ganha uma URL própria para revisão. Antes de mergear na `main`, você pode ver exatamente como ficou — isso é **revolucionário** para times e clientes.
+
+## Resumo do fluxo
+
+```
+Código local → git push → GitHub → Vercel build → CDN global
+```
+
+No próximo projeto: como migrar um site WordPress real para este setup.

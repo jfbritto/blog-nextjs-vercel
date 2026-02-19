@@ -1,0 +1,92 @@
+---
+title: "SEO no Next.js: Metadata API e boas práticas"
+date: "2025-02-05"
+description: "Aprenda como configurar SEO completo no Next.js usando a Metadata API: title, description, Open Graph e mais."
+tags: ["seo", "nextjs", "performance"]
+---
+
+## Por que SEO é crítico?
+
+Antes da migração de WordPress para Next.js, muitos desenvolvedores subestimam o SEO.
+Um site que perde posições no Google após a migração é um **desastre de negócio**.
+
+Boas notícias: o Next.js tem suporte nativo e poderoso para SEO.
+
+## Metadata API
+
+O Next.js usa a **Metadata API** para definir metadados HTML. Cada página pode exportar um objeto `metadata`:
+
+```typescript
+// app/blog/page.tsx
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Posts",
+  description: "Todos os posts do blog.",
+};
+```
+
+Isso gera automaticamente as tags `<title>` e `<meta name="description">` corretas no HTML.
+
+## Título dinâmico com template
+
+No `layout.tsx` raiz, você pode definir um template de título:
+
+```typescript
+export const metadata: Metadata = {
+  title: {
+    default: "Meu Blog",
+    template: "%s | Meu Blog",
+  },
+};
+```
+
+Agora, se uma página define `title: "Posts"`, o resultado final será **"Posts | Meu Blog"**.
+
+## Open Graph (compartilhamento em redes sociais)
+
+O Open Graph controla como o link aparece quando compartilhado no WhatsApp, Facebook, Twitter, etc.
+
+```typescript
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = getPostBySlug(params.slug);
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      publishedTime: post.date,
+    },
+  };
+}
+```
+
+## Checklist de SEO para cada página
+
+- [ ] `title` único e descritivo (50-60 caracteres)
+- [ ] `description` relevante (150-160 caracteres)
+- [ ] `openGraph.title` e `openGraph.description`
+- [ ] `lang="pt-BR"` no `<html>` do layout
+- [ ] `<time dateTime={date}>` em datas de posts
+- [ ] URLs amigáveis (slugs legíveis)
+
+## Robots e Sitemap
+
+O Next.js gera automaticamente o sitemap se você criar `app/sitemap.ts`:
+
+```typescript
+// app/sitemap.ts
+import { getAllPosts } from "@/lib/posts";
+
+export default function sitemap() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    url: `https://meublog.com/blog/${post.slug}`,
+    lastModified: post.date,
+  }));
+}
+```
+
+No próximo post: como fazer o deploy na Vercel em menos de 5 minutos.

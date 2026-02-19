@@ -1,0 +1,57 @@
+---
+title: "Introdução ao Next.js: o que é e por que usar"
+date: "2025-01-20"
+description: "Entenda o que é o Next.js, como ele se diferencia do React puro e por que é a escolha certa para projetos que precisam de SEO e performance."
+tags: ["nextjs", "react", "web"]
+---
+
+## O que é o Next.js?
+
+O **Next.js** é um framework baseado em React criado pela Vercel. Enquanto o React puro é uma biblioteca de UI, o Next.js adiciona camadas fundamentais que todo site de produção precisa:
+
+- **Roteamento** automático baseado na estrutura de pastas
+- **Renderização no servidor** (SSR, SSG, ISR)
+- **Otimização de imagens** com `next/image`
+- **Fonte web otimizada** com `next/font`
+- **SEO completo** com a Metadata API
+
+## React puro vs Next.js
+
+Com o React puro (Create React App, Vite), você tem uma SPA — o servidor entrega uma página HTML quase vazia, e o JavaScript preenche o conteúdo no navegador do usuário.
+
+O problema? **Buscadores e redes sociais têm dificuldade** em indexar e compartilhar conteúdo que só existe após a execução do JavaScript.
+
+Com o Next.js, o HTML já chega pronto do servidor. O Googlebot, o Facebook e o WhatsApp leem o conteúdo imediatamente.
+
+## App Router: o padrão atual
+
+Desde o Next.js 13, o padrão recomendado é o **App Router** (pasta `app/`). Ele usa os React Server Components por padrão, o que significa:
+
+- Menos JavaScript enviado ao cliente
+- Fetch de dados direto no servidor, sem useEffect
+- Layout aninhado nativo
+
+## Como adicionar um novo post neste blog
+
+Basta criar um arquivo `.mdx` na pasta `content/posts/` com o frontmatter correto:
+
+```markdown
+---
+title: "Título do Post"
+date: "2025-01-01"
+description: "Descrição curta para SEO"
+tags: ["tag1", "tag2"]
+---
+
+Conteúdo do post aqui...
+```
+
+O Next.js vai gerar a rota `/blog/titulo-do-post` automaticamente no próximo build.
+
+## Próximos passos
+
+Nos próximos posts vamos explorar:
+
+1. Como o SEO funciona no Next.js
+2. Como fazer o deploy na Vercel
+3. Como migrar conteúdo do WordPress
