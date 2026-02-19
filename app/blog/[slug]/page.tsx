@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+// Força SSR: esta página consulta o banco, não pode ser pré-renderizada no build
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug } from "@/lib/posts";

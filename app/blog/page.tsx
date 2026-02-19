@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+// Força SSR: esta página consulta o banco, não pode ser pré-renderizada no build
+export const dynamic = "force-dynamic";
 import { getAllPosts } from "@/lib/posts";
 import PostCard from "@/components/PostCard";
 
