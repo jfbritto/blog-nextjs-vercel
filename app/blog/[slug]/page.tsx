@@ -1,36 +1,29 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getPostBySlug } from "@/lib/posts";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-// Gera todas as rotas estáticas em build time (SSG)
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({ slug: post.slug }));
-}
-
 // Gera os metadados SEO dinâmicos por post
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  try {
-    const post = getPostBySlug(slug);
-    return {
+  const post = await getPostBySlug(slug);
+
+  if (!post) return { title: "Post não encontrado" };
+
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
       title: post.title,
       description: post.description,
-      openGraph: {
-        title: post.title,
-        description: post.description,
-        type: "article",
-        publishedTime: post.date,
-      },
-    };
-  } catch {
-    return { title: "Post não encontrado" };
-  }
+      type: "article",
+      publishedTime: post.date,
+    },
+  };
 }
 
 function formatDate(dateString: string): string {
@@ -43,13 +36,9 @@ function formatDate(dateString: string): string {
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
-  let post;
-  try {
-    post = getPostBySlug(slug);
-  } catch {
-    notFound();
-  }
+  if (!post) notFound();
 
   return (
     <article>

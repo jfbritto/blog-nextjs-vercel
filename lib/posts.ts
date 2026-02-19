@@ -1,8 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-
-const postsDirectory = path.join(process.cwd(), 'content/posts')
+import { prisma } from '@/lib/db'
 
 export type PostMeta = {
   slug: string
@@ -13,44 +9,68 @@ export type PostMeta = {
 }
 
 export type Post = PostMeta & {
+  id: string
   content: string
+  published: boolean
 }
 
-export function getAllPosts(): PostMeta[] {
-  const fileNames = fs.readdirSync(postsDirectory)
+// Retorna todos os posts publicados, do mais recente ao mais antigo
+export async function getAllPosts(): Promise<PostMeta[]> {
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      slug: true,
+      title: true,
+      description: true,
+      tags: true,
+      createdAt: true,
+    },
+  })
 
-  const posts = fileNames
-    .filter(name => name.endsWith('.mdx'))
-    .map(fileName => {
-      const slug = fileName.replace(/\.mdx$/, '')
-      const fullPath = path.join(postsDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, 'utf8')
-      const { data } = matter(fileContents)
-
-      return {
-        slug,
-        title: data.title as string,
-        date: data.date as string,
-        description: data.description as string,
-        tags: (data.tags as string[]) || [],
-      }
-    })
-
-  // Ordena do mais recente para o mais antigo
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return posts.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    description: p.description,
+    tags: p.tags,
+    date: p.createdAt.toISOString().split('T')[0],
+  }))
 }
 
-export function getPostBySlug(slug: string): Post {
-  const fullPath = path.join(postsDirectory, `${slug}.mdx`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data, content } = matter(fileContents)
+// Retorna um post publicado pelo slug — null se não existir
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const post = await prisma.post.findUnique({
+    where: { slug, published: true },
+  })
+
+  if (!post) return null
 
   return {
-    slug,
-    title: data.title as string,
-    date: data.date as string,
-    description: data.description as string,
-    tags: (data.tags as string[]) || [],
-    content,
+    id: post.id,
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    tags: post.tags,
+    date: post.createdAt.toISOString().split('T')[0],
+    content: post.content,
+    published: post.published,
+  }
+}
+
+// Para o admin — retorna qualquer post (publicado ou não) pelo id
+export async function getPostById(id: string): Promise<Post | null> {
+  const post = await prisma.post.findUnique({ where: { id } })
+
+  if (!post) return null
+
+  return {
+    id: post.id,
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    tags: post.tags,
+    date: post.createdAt.toISOString().split('T')[0],
+    content: post.content,
+    published: post.published,
   }
 }
